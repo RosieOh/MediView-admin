@@ -1,0 +1,176 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
+@import "tailwindcss";
+
+/* ===========================================================================
+   MediView Design System — "Calm Care"  (design/DESIGN_SYSTEM.md 참조)
+   =========================================================================== */
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+
+  /* Primary — Care Teal */
+  --color-primary-50: #ecfbfa;
+  --color-primary-100: #cff5f3;
+  --color-primary-200: #a2eae7;
+  --color-primary-300: #6dd9d6;
+  --color-primary-400: #38c0c0;
+  --color-primary-500: #12a3a8;
+  --color-primary-600: #0e858a;
+  --color-primary-700: #0d6b70;
+  --color-primary-800: #10565a;
+  --color-primary-900: #0e4548;
+
+  /* Accent — Warm Coral */
+  --color-accent-400: #ff9a8b;
+  --color-accent-500: #fb7060;
+  --color-accent-600: #e85647;
+
+  /* Neutral — Slate */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f6f8f9;
+  --color-neutral-100: #edf1f3;
+  --color-neutral-200: #e1e7ea;
+  --color-neutral-300: #c6d0d5;
+  --color-neutral-400: #98a5ac;
+  --color-neutral-500: #6a7880;
+  --color-neutral-600: #4c585f;
+  --color-neutral-700: #384249;
+  --color-neutral-800: #232a2f;
+  --color-neutral-900: #141a1d;
+  --color-ink: #0f1518;
+
+  /* Semantic */
+  --color-success: #1fa971;
+  --color-warning: #e8a33d;
+  --color-danger: #e5484d;
+  --color-info: #3e7bc9;
+
+  /* Role aliases (테마에 따라 아래 :root 에서 값이 바뀐다) */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-content: var(--content);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* Elevation — soft, slate-tinted */
+  --shadow-e1: 0 1px 2px rgba(20, 26, 29, 0.06), 0 1px 3px rgba(20, 26, 29, 0.05);
+  --shadow-e2: 0 4px 12px rgba(20, 26, 29, 0.08);
+  --shadow-e3: 0 12px 32px rgba(20, 26, 29, 0.1);
+  --shadow-glow: 0 8px 30px rgba(18, 163, 168, 0.22);
+
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Light (default) */
+:root {
+  --canvas: #f6f8f9;
+  --surface: #ffffff;
+  --surface-2: #eef2f4;
+  --line: #e1e7ea;
+  --line-strong: #c6d0d5;
+  --content: #0f1518;
+  --muted: #6a7880;
+  --subtle: #98a5ac;
+  --brand: #12a3a8;
+  --brand-ink: #0d6b70;
+  --accent: #fb7060;
+  color-scheme: light;
+}
+
+/* Dark */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0f1518;
+    --surface: #161d21;
+    --surface-2: #1d262b;
+    --line: #273239;
+    --line-strong: #35434b;
+    --content: #eaf0f1;
+    --muted: #9aa7ae;
+    --subtle: #6a7880;
+    --brand: #38c0c0;
+    --brand-ink: #6dd9d6;
+    --accent: #ff9a8b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --canvas: #0f1518;
+  --surface: #161d21;
+  --surface-2: #1d262b;
+  --line: #273239;
+  --line-strong: #35434b;
+  --content: #eaf0f1;
+  --muted: #9aa7ae;
+  --subtle: #6a7880;
+  --brand: #38c0c0;
+  --brand-ink: #6dd9d6;
+  --accent: #ff9a8b;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --canvas: #f6f8f9;
+  --surface: #ffffff;
+  --surface-2: #eef2f4;
+  --line: #e1e7ea;
+  --line-strong: #c6d0d5;
+  --content: #0f1518;
+  --muted: #6a7880;
+  --subtle: #98a5ac;
+  --brand: #12a3a8;
+  --brand-ink: #0d6b70;
+  --accent: #fb7060;
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--canvas);
+    color: var(--content);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--brand) 22%, transparent);
+  }
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

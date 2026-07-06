@@ -60,3 +60,16 @@ export type ReportListItem = {
   generatedBy: number;
   createdAt?: string;
 };
+
+export type DoctorVerification = "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
+export type AdminDoctor = {
+  id: number;
+  userId: number;
+  name?: string;
+  email: string;
+  specialty?: string;
+  organizationId: number;
+  organizationName: string;
+  organizationStatus: OrgStatus;
+  verificationStatus: DoctorVerification;
+};

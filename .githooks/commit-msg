@@ -1,0 +1,10 @@
+#!/bin/sh
+# Strip AI co-author trailers / attribution lines from commit messages.
+# Enable once per clone:  git config core.hooksPath .githooks
+# Removes:
+#   - "Co-authored-by: ... (Claude|Cursor|Anthropic|cursoragent)"
+#   - "Generated with [Claude Code]" attribution lines
+msg_file="$1"
+[ -f "$msg_file" ] || exit 0
+grep -viE '^[[:space:]]*co-authored-by:.*(claude|cursor|anthropic|cursoragent)|generated with .*claude code' "$msg_file" > "$msg_file.tmp" 2>/dev/null && mv "$msg_file.tmp" "$msg_file"
+exit 0

@@ -39,11 +39,15 @@ export function Button({
   );
 }
 
+// JellySafe 4단계 리스크 스케일 토큰 사용(raw hex 금지).
+// 라이트/다크 각각 대비 검증 완료(모두 ≥4.5:1) — globals.css 의 --status-* 참조.
+// success→safe, warning→caution, danger→critical(오류/반려의 심각도) 로 매핑한다.
 const badgeTones: Record<string, string> = {
   brand: "bg-primary-50 text-primary-700",
-  success: "bg-[#E4F6ED] text-[#137A4E]",
-  warning: "bg-[#FBEFD9] text-[#996314]",
-  danger: "bg-[#FBE3E4] text-[#B02529]",
+  success: "bg-status-safe-bg text-status-safe-ink",
+  warning: "bg-status-caution-bg text-status-caution-ink",
+  danger: "bg-status-critical-bg text-status-critical-ink",
+  critical: "bg-status-critical-bg text-status-critical-ink",
   neutral: "bg-surface-2 text-muted",
 };
 

@@ -9,6 +9,7 @@ const nav = [
   { href: "/", label: "대시보드", icon: "grid" },
   { href: "/organizations", label: "기관 승인", icon: "building" },
   { href: "/doctors", label: "의료진 검증", icon: "badge" },
+  { href: "/reviews", label: "리뷰 관리", icon: "star" },
   { href: "/users", label: "사용자", icon: "users" },
   { href: "/reports", label: "보고서", icon: "chart" },
 ];
@@ -20,6 +21,7 @@ function Icon({ name }: { name: string }) {
     users: "M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
     chart: "M3 3v18h18M8 15v3M13 10v8M18 6v12",
     badge: "M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8.5 13.5 7 22l5-3 5 3-1.5-8.5",
+    star: "M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z",
   };
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

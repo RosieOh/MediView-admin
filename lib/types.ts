@@ -61,6 +61,15 @@ export type ReportListItem = {
   createdAt?: string;
 };
 
+export type AdminReview = {
+  id: number;
+  rating: number;
+  comment?: string;
+  doctorName?: string;
+  patientName?: string;
+  createdAt?: string;
+};
+
 export type DoctorVerification = "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
 export type AdminDoctor = {
   id: number;

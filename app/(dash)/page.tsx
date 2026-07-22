@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner, fmtWon, ErrorBox } from "@/components/ui";
+import { Card, SkeletonStats, fmtWon, ErrorBox } from "@/components/ui";
 import type { Overview } from "@/lib/types";
 
 const roleLabel: Record<string, string> = { PATIENT: "환자", DOCTOR: "의료진", ADMIN: "관리자" };
@@ -26,7 +26,14 @@ export default function Dashboard() {
   }, []);
 
   if (error) return <ErrorBox message={error} />;
-  if (!data) return <Spinner />;
+  if (!data)
+    return (
+      <div>
+        <h1 className="text-[26px] font-bold text-content">대시보드</h1>
+        <p className="mt-1 text-[14px] text-muted">플랫폼 현황 한눈에 보기</p>
+        <SkeletonStats />
+      </div>
+    );
 
   const stats = [
     { label: "전체 사용자", value: data.totalUsers.toLocaleString() },

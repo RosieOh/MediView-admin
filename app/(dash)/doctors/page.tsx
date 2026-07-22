@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
+import { Card, SkeletonRows, EmptyState, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
 import type { AdminDoctor, DoctorVerification } from "@/lib/types";
 
 const vTone: Record<DoctorVerification, "success" | "warning" | "danger" | "neutral"> = {
@@ -75,9 +75,9 @@ export default function DoctorsPage() {
       </div>
 
       {!docs ? (
-        <Spinner />
+        <SkeletonRows />
       ) : docs.length === 0 ? (
-        <Card className="mt-4 p-10 text-center text-[14px] text-muted">해당 상태의 의료진이 없습니다.</Card>
+        <Card className="mt-4"><EmptyState title="해당 상태의 의료진이 없습니다" hint="위 상태 필터를 바꾸면 다른 의료진을 볼 수 있습니다." /></Card>
       ) : (
         <Card className="mt-4 overflow-hidden">
           <div className="divide-y divide-line">

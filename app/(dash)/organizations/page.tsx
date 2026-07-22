@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
+import { Card, SkeletonRows, EmptyState, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
 import type { Organization, OrgStatus } from "@/lib/types";
 
 const statusTone: Record<OrgStatus, "success" | "warning" | "danger" | "neutral"> = {
@@ -51,9 +51,9 @@ export default function OrganizationsPage() {
       <PageHeader title="기관 승인" subtitle="의료기관 등록을 검토하고 승인/반려합니다" />
 
       {!orgs ? (
-        <Spinner />
+        <SkeletonRows />
       ) : orgs.length === 0 ? (
-        <Card className="mt-6 p-10 text-center text-[14px] text-muted">등록된 기관이 없습니다.</Card>
+        <Card className="mt-4"><EmptyState title="등록된 기관이 없습니다" hint="기관이 가입 신청하면 이곳에서 승인·반려할 수 있습니다." /></Card>
       ) : (
         <Card className="mt-6 overflow-hidden">
           <div className="divide-y divide-line">

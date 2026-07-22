@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
+import { Card, SkeletonRows, EmptyState, Badge, Button, PageHeader, ErrorBox } from "@/components/ui";
 import type { AdminUser, UserStatus } from "@/lib/types";
 
 const statusTone: Record<UserStatus, "success" | "danger" | "neutral"> = {
@@ -58,7 +58,7 @@ export default function UsersPage() {
       <PageHeader title="사용자 관리" subtitle="계정 상태를 관리합니다 (정지 시 세션 회수)" />
 
       {!users ? (
-        <Spinner />
+        <SkeletonRows />
       ) : (
         <>
           <input
@@ -95,7 +95,7 @@ export default function UsersPage() {
                 </div>
               ))}
               {filtered.length === 0 ? (
-                <div className="px-5 py-10 text-center text-[14px] text-muted">사용자가 없습니다.</div>
+                <EmptyState title="사용자가 없습니다" hint="검색어를 지우거나 다른 이메일로 다시 찾아보세요." />
               ) : null}
             </div>
           </Card>

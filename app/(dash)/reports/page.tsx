@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api, API_URL, getToken } from "@/lib/api";
-import { Card, Spinner, Button, PageHeader, ErrorBox, fmtWon } from "@/components/ui";
+import { Card, SkeletonRows, EmptyState, Button, PageHeader, ErrorBox, fmtWon } from "@/components/ui";
 import type { PeriodReport, ReportListItem } from "@/lib/types";
 
 export default function ReportsPage() {
@@ -88,9 +88,9 @@ export default function ReportsPage() {
 
       <h2 className="mt-8 text-[16px] font-bold text-content">생성된 보고서</h2>
       {!list ? (
-        <Spinner />
+        <SkeletonRows rows={3} />
       ) : list.length === 0 ? (
-        <Card className="mt-3 p-8 text-center text-[14px] text-muted">생성된 보고서가 없습니다.</Card>
+        <Card className="mt-3"><EmptyState title="생성된 보고서가 없습니다" hint="위에서 기간을 선택해 분기 보고서를 생성할 수 있습니다." /></Card>
       ) : (
         <Card className="mt-3 overflow-hidden">
           <div className="divide-y divide-line">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { Card, SkeletonStats, fmtWon, ErrorBox } from "@/components/ui";
@@ -29,8 +30,7 @@ export default function Dashboard() {
   if (!data)
     return (
       <div>
-        <h1 className="text-[26px] font-bold text-content">대시보드</h1>
-        <p className="mt-1 text-[14px] text-muted">플랫폼 현황 한눈에 보기</p>
+        <DashHeader />
         <SkeletonStats />
       </div>
     );
@@ -42,57 +42,146 @@ export default function Dashboard() {
     { label: "본인확인 완료", value: data.verifiedKyc.toLocaleString() },
   ];
 
+  const pending = data.pendingOrganizations + data.pendingDoctors;
+
+  return (
+    <div>
+      <DashHeader />
+
+      {/* 1) 액션 큐 — 지금 관리자 조치가 필요한 일이 가장 먼저 온다. */}
+      <section aria-labelledby="queue-h" className="mt-7">
+        <div className="flex items-baseline justify-between">
+          <h2 id="queue-h" className="text-[15px] font-bold text-content">
+            지금 처리할 일
+          </h2>
+          {pending > 0 ? (
+            <span className="text-[13px] font-semibold text-brand [font-variant-numeric:tabular-nums]">
+              {pending.toLocaleString()}건 대기
+            </span>
+          ) : null}
+        </div>
+
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ActionCard
+            href="/organizations"
+            label="기관 승인 대기"
+            count={data.pendingOrganizations}
+            cta="기관 심사"
+          />
+          <ActionCard
+            href="/doctors"
+            label="의료진 면허 검증 대기"
+            count={data.pendingDoctors}
+            cta="면허 검증"
+          />
+        </div>
+      </section>
+
+      {/* 2) 운영 지표 — 참고용. 결정이 아니라 현황이므로 액션 큐 다음에 온다. */}
+      <section aria-labelledby="metrics-h" className="mt-9">
+        <h2 id="metrics-h" className="text-[15px] font-bold text-content">
+          운영 지표
+        </h2>
+
+        <div className="mt-3 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {stats.map((s) => (
+            <Card key={s.label} className="p-5">
+              <div className="text-[13px] text-muted">{s.label}</div>
+              <div className="mt-1.5 text-[26px] font-extrabold tracking-tight text-content [font-variant-numeric:tabular-nums]">
+                {s.value}
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <Card className="p-6">
+            <h3 className="text-[14px] font-bold text-content">역할별 사용자</h3>
+            <div className="mt-4 space-y-3">
+              {Object.entries(data.usersByRole).map(([k, v]) => (
+                <Bar key={k} label={roleLabel[k] ?? k} value={v} total={data.totalUsers} />
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h3 className="text-[14px] font-bold text-content">예약 상태</h3>
+            <div className="mt-4 space-y-3">
+              {Object.entries(data.appointmentsByStatus)
+                .filter(([, v]) => v > 0)
+                .map(([k, v]) => (
+                  <Bar key={k} label={apptLabel[k] ?? k} value={v} total={data.totalAppointments} />
+                ))}
+              {data.totalAppointments === 0 ? (
+                <p className="text-[14px] text-muted">예약 데이터가 없습니다.</p>
+              ) : null}
+            </div>
+          </Card>
+        </div>
+
+        <Card className="mt-4 p-6">
+          <h3 className="text-[14px] font-bold text-content">결제 요약</h3>
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <KV label="결제 건수" value={`${data.paidPaymentCount}건`} />
+            <KV label="총매출" value={fmtWon(data.grossRevenue)} />
+            <KV label="환불액" value={fmtWon(data.refundedAmount)} />
+            <KV label="순매출" value={fmtWon(data.netRevenue)} strong />
+          </div>
+        </Card>
+      </section>
+    </div>
+  );
+}
+
+function DashHeader() {
   return (
     <div>
       <h1 className="text-[26px] font-bold text-content">대시보드</h1>
-      <p className="mt-1 text-[14px] text-muted">플랫폼 현황 한눈에 보기</p>
-
-      <div className="mt-7 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {stats.map((s) => (
-          <Card key={s.label} className="p-5">
-            <div className="text-[13px] text-muted">{s.label}</div>
-            <div className="mt-1.5 text-[26px] font-extrabold tracking-tight text-content [font-variant-numeric:tabular-nums]">
-              {s.value}
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className="p-6">
-          <h2 className="text-[16px] font-bold text-content">역할별 사용자</h2>
-          <div className="mt-4 space-y-3">
-            {Object.entries(data.usersByRole).map(([k, v]) => (
-              <Bar key={k} label={roleLabel[k] ?? k} value={v} total={data.totalUsers} />
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-6">
-          <h2 className="text-[16px] font-bold text-content">예약 상태</h2>
-          <div className="mt-4 space-y-3">
-            {Object.entries(data.appointmentsByStatus)
-              .filter(([, v]) => v > 0)
-              .map(([k, v]) => (
-                <Bar key={k} label={apptLabel[k] ?? k} value={v} total={data.totalAppointments} />
-              ))}
-            {data.totalAppointments === 0 ? (
-              <p className="text-[14px] text-muted">예약 데이터가 없습니다.</p>
-            ) : null}
-          </div>
-        </Card>
-      </div>
-
-      <Card className="mt-6 p-6">
-        <h2 className="text-[16px] font-bold text-content">결제 요약</h2>
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <KV label="결제 건수" value={`${data.paidPaymentCount}건`} />
-          <KV label="총매출" value={fmtWon(data.grossRevenue)} />
-          <KV label="환불액" value={fmtWon(data.refundedAmount)} />
-          <KV label="순매출" value={fmtWon(data.netRevenue)} strong />
-        </div>
-      </Card>
+      <p className="mt-1 text-[14px] text-muted">처리할 일을 먼저, 현황은 그 다음.</p>
     </div>
+  );
+}
+
+/**
+ * 승인 대기 액션 카드. 대기 건이 있으면 브랜드 강조 + 처리 동선, 없으면 담담한 완료 상태.
+ * 카드 전체가 링크(큰 클릭 영역), focus-visible 아웃라인 지원.
+ */
+function ActionCard({
+  href,
+  label,
+  count,
+  cta,
+}: {
+  href: string;
+  label: string;
+  count: number;
+  cta: string;
+}) {
+  const has = count > 0;
+  return (
+    <Link
+      href={href}
+      className={`group flex items-center justify-between rounded-2xl border bg-surface px-5 py-4 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-brand ${
+        has ? "border-brand/40 hover:border-brand" : "border-line hover:border-line-strong"
+      }`}
+    >
+      <div className="min-w-0">
+        <div className="text-[13px] text-muted">{label}</div>
+        <div className="mt-1 flex items-baseline gap-2">
+          <span
+            className={`text-[28px] font-extrabold leading-none [font-variant-numeric:tabular-nums] ${
+              has ? "text-brand" : "text-content"
+            }`}
+          >
+            {count.toLocaleString()}
+          </span>
+          <span className="text-[13px] text-muted">{has ? "건 대기" : "건 · 대기 없음"}</span>
+        </div>
+      </div>
+      <span className={`shrink-0 text-[13px] font-semibold ${has ? "text-brand" : "text-subtle"}`}>
+        {has ? `${cta} →` : "확인"}
+      </span>
+    </Link>
   );
 }
 

@@ -16,6 +16,8 @@ export type Overview = {
   refundedAmount: number;
   netRevenue: number;
   verifiedKyc: number;
+  pendingOrganizations: number;
+  pendingDoctors: number;
 };
 
 export type OrgStatus = "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED";
